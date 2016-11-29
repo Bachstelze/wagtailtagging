@@ -1,0 +1,14 @@
+body {
+    padding:0px;
+    margin:0px;
+}
+#bar{
+    position:relative;
+    margin:0px;
+    padding: 20px 20px;
+    background-color:rgb(100,200,215);
+}
+#bar a {
+    font-family: 'H-Thin','Helvetica Neue',Arial,Helvetica,sans-serif;
+    color: rgb(48,48,48);
+}

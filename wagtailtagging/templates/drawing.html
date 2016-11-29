@@ -1,0 +1,57 @@
+{% extends "wagtailadmin/base.html" %}
+
+{% load staticfiles i18n wagtailimages_tags taggit_templatetags2_tags %}
+
+{% block extra_css %}
+    {{ block.super }}
+
+    <link rel="stylesheet" href="{% static 'css/wagtailtagging.css' %}" type="text/css">
+{% endblock %}
+
+{% block extra_js %}
+    {{ block.super }}
+
+    <script src="{% static 'js/foreground_cropping.js' %}"></script>
+    <script src="{% static 'js/main.js' %}"></script>
+    <script src="{% static 'js/konva.min.js' %}"></script>
+    <script>
+        var selections = {{ image.get_selections|safe }};
+    </script>
+{% endblock %}
+
+{% block content %}
+    {% image image original as original_image %}
+    {% image image max-1500x800 as resized_image %}
+    {% include "wagtailadmin/shared/header.html" with title="clipping" subtitle=image.title icon="image" usage_object=image %}
+
+    <div class="row row-flush nice-padding">
+
+        <div class="col12">
+            <div id="results">
+            </div>
+            <div id="drawing">
+                Choose selection:  <select id="drop_down">
+                      <option value="full" id="-1">{{ image.title }} - full image</option>
+                        {% for cropped_image in cropped_images %}
+                            {% get_tags_for_object cropped_image as tags %}
+                            <option value="{{ tags.0 }}" id="{{ cropped_image.id }}">{{ tags.0 }}</option>
+                        {% endfor %}
+                    </select>
+                <br>
+                <div id="foreground_button" type="button" value="Foreground" class="custom_button" style="margin: 5px;">Foreground</div>
+                <div id="background_button" type="button" value="Background" class="custom_button" style="margin: 5px;">Background</div>
+                <div id="eraser_button" type="button" value="Eraser" class="custom_button" style="margin: 5px;">Eraser</div>
+                <div id="calculate_button" type="button" value="Calculate" class="custom_button" style="margin: 5px;">Calculate</div>
+                <div id="save_button" type="button" value="Save" class="custom_button" style="margin: 5px;">Save</div>
+                Brush size: <input id="brush_size" name="brush_size" type="text" maxlength="3" value="20" >
+                <!--<input id="brush_size" type="range" min="1" max="300" step="1" />-->
+              <div id="container"></div>
+
+            </div>
+            <div>
+                <img id="original_image" name="original_image" {{ original_image.attrs }} data-original-width="{{ original_image.width }}" data-original-height="{{ original_image.height }}">
+                <img id="resized_image" name="resized_image" {{ resized_image.attrs }} data-resized-width="{{ resized_image.width }}" data-resized-height="{{ resized_image.height }}">
+            </div>
+        </div>
+    </div>
+{% endblock %}

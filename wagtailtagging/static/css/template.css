@@ -1,0 +1,114 @@
+@font-face {
+  font-family: 'H-Regular';
+  src:  url('../fonts/H-Regular.woff') format('woff');
+}
+@font-face {
+  font-family: 'H-Bold';
+  src:  url('../fonts/H-Bold.woff') format('woff');
+}
+@font-face {
+  font-family: 'H-Thin';
+  src:  url('../fonts/H-Thin.woff') format('woff');
+}
+*{
+text-decoration:none;
+}
+a:link, a:visited {
+color:rgb(100,200,215);
+}
+a:hover, a:active {
+color:rgb(100,200,215);
+}
+#image_wrapper {
+margin:0 auto;
+}
+#image_container {
+    position:relative;
+}
+.template_selection {
+    position:absolute;
+    z-index:350;
+    box-shadow: 1px 1px 10px 0 black;
+    position: absolute;
+    border: 2px solid #43b1b0;
+    opacity: 0;
+}
+.blanked_image_container {
+
+}
+.blanked_image {
+    background: rgba(255, 255, 255, 0.5);
+    margin-top:-2px;
+    margin-left:-2px;
+    position:absolute;
+    z-index:300;
+    box-shadow: 1px 1px 10px 0 black;
+    border: 2px solid #43b1b0;
+    opacity: 0;
+}
+.info_wrapper {
+width:500px;
+margin:0 auto;
+}
+.intro {
+margin: 10px 0px;
+}
+.template_tag {
+float:left;
+margin:10px;
+font-family: 'H-Thin','Helvetica Neue',Arial,Helvetica,sans-serif;
+}
+.meta {
+font-family: 'H-Thin','Helvetica Neue',Arial,Helvetica,sans-serif;
+width:100%;
+}
+.right_meta {
+float:right;
+margin-left:10px;
+}
+#tags {
+height:40px;
+}
+.intro {
+font-family: 'H-Regular','Helvetica Neue',Arial,Helvetica,sans-serif;
+}
+#richtext {
+font-family: 'H-Thin','Helvetica Neue',Arial,Helvetica,sans-serif !important;
+}
+.page_thumb {
+float:left;
+margin:20px;
+}
+h1 {
+padding-top:20px;
+font-weight:normal;
+font-size: 2.5em;
+line-height: 1.1em;
+font-family: 'H-Bold','Helvetica Neue',Arial,Helvetica,sans-serif;
+color: rgb(48,48,48);
+}
+h2 {
+font-weight:normal;
+font-size: 2em;
+line-height: 1.1em;
+font-family: 'H-Bold','Helvetica Neue',Arial,Helvetica,sans-serif;
+color: rgb(48,48,48);
+}
+.page_thumb img:hover {
+border: 2px solid rgb(100,200,215);
+margin:-2px;
+}
+h2:hover {
+color:rgb(100,200,215);
+}
+#main_page {
+width:100%;
+clear:both;
+}
+.clearfix:after {
+    content: ".";
+    clear: both;
+    display: block;
+    visibility: hidden;
+    height: 0px;
+}

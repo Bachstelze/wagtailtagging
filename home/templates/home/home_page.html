@@ -1,0 +1,45 @@
+{% extends "page_wrapper.html" %}
+
+{% load static wagtailimages_tags wagtailcore_tags %}
+
+{% block body_class %}template-homepage{% endblock %}
+
+{% block extra_css %}
+    {{ block.super }}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/template.css' %}">
+{% endblock %}
+
+{% block content %}
+    {{ block.super }}
+    {% if request.GET.front %}
+        {% with page.get_last_front_children as children %}
+            {% for child in children %}
+                <div class="page_thumb">
+                    <a href="{% slugurl child.slug %}?front=true#{{ child.title }}">
+                        <h2>{{ child.title }}</h2>
+                    </a>
+                    {% if child.main_image %}
+                        <a href="{% slugurl child.slug %}?front=true#{{ child.title }}">
+                            {% image child.main_image fill-200x200 %}
+                        </a>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        {% endwith %}
+    {% else %}
+        {% with page.get_last_children as children %}
+            {% for child in children %}
+                <div class="page_thumb">
+                    <a href="{% slugurl child.slug %}#{{ child.title }}">
+                        <h2>{{ child.title }}</h2>
+                    </a>
+                    {% if child.main_image %}
+                        <a href="{% slugurl child.slug %}#{{ child.title }}">
+                            {% image child.main_image fill-200x200 %}
+                        </a>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        {% endwith %}
+    {% endif %}
+{% endblock %}

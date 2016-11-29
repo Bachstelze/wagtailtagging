@@ -1,0 +1,138 @@
+{% extends "page_wrapper.html" %}
+
+{% load static wagtailcore_tags wagtailimages_tags %}
+
+{% block body_class %}template-ImageSelector{% endblock %}
+
+{% block extra_js %}
+    <script src="https://cdn.jsdelivr.net/jquery/3.0.0-beta1/jquery.min.js"></script>
+    <script src="{% static 'js/show_tags.js' %}"></script>
+{% endblock %}
+
+{% block extra_css %}
+    {{ block.super }}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/template.css' %}">
+{% endblock %}
+
+{% block content %}
+    {{ block.super }}
+    {% if request.GET.front %}
+        {% with page.get_next_cutted_front_siblings as next_siblings %}
+            {% for sibling in next_siblings %}
+                    <div class="page_thumb">
+                        <a href="{% slugurl sibling.slug %}?front=true#{{ sibling.title }}">
+                            <h2>{{ sibling }}</h2>
+                        </a>
+                        {% if sibling.main_image %}
+                            <a href="{% slugurl sibling.slug %}?front=true#{{ sibling.title }}">
+                                {% image sibling.main_image fill-200x200 %}
+                            </a>
+                        {% endif %}
+                    </div>
+            {% endfor %}
+        {% endwith %}
+    {% else %}
+        {% with page.get_next_cutted_siblings as next_siblings %}
+            {% for sibling in next_siblings %}
+                    <div class="page_thumb">
+                        <a href="{% slugurl sibling.slug %}#{{ sibling.title }}">
+                            <h2>{{ sibling }}</h2>
+                        </a>
+                        {% if sibling.main_image %}
+                            <a href="{% slugurl sibling.slug %}#{{ sibling.title }}">
+                                {% image sibling.main_image fill-200x200 %}
+                            </a>
+                        {% endif %}
+                    </div>
+            {% endfor %}
+        {% endwith %}
+    {% endif %}
+    <br><div id="main_page" class="clearfix">
+        <div id="image_wrapper">
+            <a name="{{ page.title }}"></a>
+           <h1>{{ page.title }}</h1>
+           <p class="meta">
+               <span>{{ page.date }}</span>
+               <span class="right_meta">
+                   {% image page.main_image original as tmp_photo %}
+                   <a href="..{{ tmp_photo.url }}">
+                       Originalbild {{tmp_photo.width}}x{{tmp_photo.height}}
+                   </a>
+               </span>
+               <span class="right_meta">
+                   <a href="../api/v1/images/{{ page.main_image.id }}">Rest-Endpoint</a>
+               </span>
+           </p>
+            <div id="image_container">
+                {% if page.main_image %}
+                    {% image page.main_image max-1500x800 %}
+                {% endif %}
+                {% load blanked %}
+                {% get_blanked page.main_image %}
+            </div>
+            {% if page.main_image %}
+               {% load taggit_templatetags2_tags %}
+               {% get_tags_for_object page.main_image as tags %}
+                <div id="tags">
+                    {% for tag in tags %}<div class="template_tag">{{ tag }}</div>{% endfor %}
+                </div>
+            {% endif %}
+        </div>
+        <div class="info_wrapper">
+             <div class="intro">{{ page.intro }}</div>
+            <div id="richtext">
+                {{ page.body|richtext }}
+            </div>
+        </div>
+        <script>
+            var original_width = {{ page.main_image.width }};
+            var original_height = {{ page.main_image.height }};
+            var selections = {{ page.main_image.get_selections|safe }};
+            var all_tags = [{% for tag in tags %}"{{ tag }}",{% endfor %}"general_tag"];
+            var image_id = {{ page.main_image.id }};
+
+            {% if request.GET.front %}
+                var right_url = "../{{ page.specific.get_prev_front_sibling.slug }}/?front=true#{{ page.specific.get_prev_front_sibling.title }}";
+                var right_title = "{{ page.specific.get_prev_front_sibling.title }}";
+                var left_url = "../{{ page.specific.get_next_front_sibling.slug }}/?front=true#{{ page.specific.get_next_front_sibling.title }}";
+                var left_title = "{{ page.specific.get_next_front_sibling.title }}";
+            {% else %}
+                var right_url = "../{{ page.get_prev_sibling.specific.slug }}/#{{ page.get_prev_sibling.specific.title }}";
+                var right_title = "{{ page.get_prev_sibling.specific.title }}";
+                var left_url = "../{{ page.get_next_sibling.specific.slug }}/#{{ page.get_next_sibling.specific.title }}";
+                var left_title = "{{ page.get_next_sibling.specific.title }}";
+            {% endif %}
+        </script>
+    </div><br>
+    {% if request.GET.front %}
+        {% with page.get_prev_cutted_front_siblings as prev_siblings %}
+            {% for sibling in prev_siblings %}
+                    <div class="page_thumb">
+                        <a href="{% slugurl sibling.slug %}?front=true#{{ sibling.title }}">
+                            <h2>{{ sibling }}</h2>
+                        </a>
+                        {% if sibling.main_image %}
+                            <a href="{% slugurl sibling.slug %}?front=true#{{ sibling.title }}">
+                                {% image sibling.main_image fill-200x200 %}
+                            </a>
+                        {% endif %}
+                    </div>
+            {% endfor %}
+        {% endwith %}
+    {% else %}
+        {% with page.get_prev_cutted_siblings as prev_siblings %}
+            {% for sibling in prev_siblings %}
+                    <div class="page_thumb">
+                        <a href="{% slugurl sibling.slug %}#{{ sibling.title }}">
+                            <h2>{{ sibling }}</h2>
+                        </a>
+                        {% if sibling.main_image %}
+                            <a href="{% slugurl sibling.slug %}#{{ sibling.title }}">
+                                {% image sibling.main_image fill-200x200 %}
+                            </a>
+                        {% endif %}
+                    </div>
+            {% endfor %}
+        {% endwith %}
+    {% endif %}
+{% endblock %}

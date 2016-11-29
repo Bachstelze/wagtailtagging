@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block branding_favicon %}
+    <link rel="shortcut icon" href="{% static 'favicon/favicon.ico' %}" />
+{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/wrapper.css' %}">
+{% endblock %}
+
+{% block content %}
+<header>
+    <div id="bar">
+            <a href="/">new</a>
+            <a href="/?front=true">front</a>
+            <a href="/api/v1/pages">pages</a>
+            <a href="/api/v1/images">images</a>
+            <a href="/api/v1/documents">documents</a>
+    </div>
+</header>
+{% endblock %}
