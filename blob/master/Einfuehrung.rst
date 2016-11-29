@@ -4,7 +4,7 @@
 Einführung
 ==========
 
-Im folgenden wird die Extension `Wagtailtaggging <https://github.com/Bachstelze/wagtailtagging/>`_ für das Django CMS `Wagtail <https://wagtail.io/>`_ dokumentiert. Da diese Software während eines Praktikums bei NMY entstanden ist, dient die Doku ebenso als Praktikumsbericht. Das Wagtailtagging überhaupt in dieser Form entstand, ist der großen Eigenverantwortung und Selbständigkeit zu verdanken, die NMY von mir verlangte.
+Im folgenden wird die Extension `Wagtailtaggging <https://github.com/Bachstelze/wagtailtaging/>`_ für das Django CMS `Wagtail <https://wagtail.io/>`_ dokumentiert. Da diese Software während eines Praktikums bei NMY entstanden ist, dient die Doku ebenso als Praktikumsbericht. Das Wagtailtagging überhaupt in dieser Form entstand, ist der großen Eigenverantwortung und Selbständigkeit zu verdanken, die NMY von mir verlangte.
 
 Betrieb
 =======

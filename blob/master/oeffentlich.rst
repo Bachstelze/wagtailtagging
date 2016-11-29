@@ -36,7 +36,7 @@ Dient als Landingpage, bei der noch kein Bild ausgewählt wurde. Das Template ka
                 return []
 
 
-Image_Selctor
+Image_Selector
 =============
     ``home/templates/home/image_selector.html``
     
@@ -100,7 +100,7 @@ Für eine dynamische Ansicht ist das Skript show_tags.js verantwortlich. Neben d
 
     var tags_to_selection = {};
 
-Dies wird nachdem die Verhältnisgrößen kalkuliert worden mit den passenden Daten aus dem Serverobjekt "selections" befüllt.  Das vorladen von benachbarten Bilder wurde nicht ausimplementiert, es steht aber mit 'json/method/object_id/' ein entsprechender Serverendpoint zur Verfügung. Die object_id entspricht der Bild-Id und method steht für eine der folgenden Funktionen::
+Dies wird nachdem die Verhältnisgrößen kalkuliert wurden mit den passenden Daten aus dem Serverobjekt "selections" befüllt.  Das vorladen von benachbarten Bilder wurde nicht ausimplementiert, es steht aber mit 'json/method/object_id/' ein entsprechender Serverendpoint zur Verfügung. Die object_id entspricht der Bild-Id und method steht für eine der folgenden Funktionen::
 
     'get_prev_front_sibling','get_next_front_sibling',
     'get_next_cutted_siblings','get_prev_cutted_siblings',
