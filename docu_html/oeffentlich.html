@@ -1,0 +1,218 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="de">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Öffentliche Ansicht &#8212; wagtailtagging 1.0 Dokumentation</title>
+    
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/translations.js"></script>
+    <link rel="index" title="Stichwortverzeichnis" href="genindex.html" />
+    <link rel="search" title="Suche" href="search.html" />
+    <link rel="top" title="wagtailtagging 1.0 Dokumentation" href="index.html" />
+    <link rel="next" title="Erweiterungen" href="erweiterungen.html" />
+    <link rel="prev" title="Nutzungsanleitung" href="nutzung.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="offentliche-ansicht">
+<span id="ansicht"></span><h1>Öffentliche Ansicht<a class="headerlink" href="#offentliche-ansicht" title="Link zu dieser Überschrift">¶</a></h1>
+<p>Zur einfachen Einsicht für normale Nutzer ohne Zugangsrechte wurden eigene Templates und Skripte erstellt.</p>
+<div class="section" id="page-wrapper">
+<h2>Page-wrapper<a class="headerlink" href="#page-wrapper" title="Link zu dieser Überschrift">¶</a></h2>
+<blockquote>
+<div><code class="docutils literal"><span class="pre">wagtailtagging/templates/page_wrapper.html</span></code></div></blockquote>
+<p>Alle Frontendseiten sind von diesem Wrapper abgeleitet. Er stellt eine allgemeine Stylingdatei und eine Menübar zur Verfügung. Die Menüpunkte beinhalten die Sektionen new, front, pages, images und documents. Bei new und front wird man zur Homepage mit der entsprechenden Flag weitergeleitet, bei pages, images und documents zu den browseable Rest-Endpoints. Die Modells für die angeführten  Seiten liegen in home/models.py</p>
+</div>
+<div class="section" id="homepage">
+<h2>Homepage<a class="headerlink" href="#homepage" title="Link zu dieser Überschrift">¶</a></h2>
+<blockquote>
+<div><code class="docutils literal"><span class="pre">home/templates/home/home_page.html</span></code></div></blockquote>
+<p>Dient als Landingpage, bei der noch kein Bild ausgewählt wurde. Das Template kann ohne Get-Attribute oder mit einer Front-Flag aufgerufen werden. Mit der Frontflag werden nur Bilder gezeigt die als solche im Backend markiert wurden (wie z.B. die Projektseite). Das Modell sieht wie folgt aus:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">HomePage</span><span class="p">(</span><span class="n">Page</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Landing Page of wagtailTagging</span>
+<span class="sd">    There are only displayed the menu and the first 100 thumbnails with headers.</span>
+<span class="sd">    You can browse it normal mode or in front mode ?front=true</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">get_last_children</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;returns 100 children pages of Homepage&quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_children</span><span class="p">()</span><span class="o">.</span><span class="n">specific</span><span class="p">()</span><span class="o">.</span><span class="n">reverse</span><span class="p">()[</span><span class="mi">0</span><span class="p">:</span><span class="mi">100</span><span class="p">]</span>
+        <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">[]</span>
+
+    <span class="k">def</span> <span class="nf">get_last_front_children</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;returns 100 children pages of Homepage with the front flag&quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">ImageSelector</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">front</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">reverse</span><span class="p">()[</span><span class="mi">0</span><span class="p">:</span><span class="mi">100</span><span class="p">]</span>
+        <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">[]</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="image-selctor">
+<h2>Image_Selctor<a class="headerlink" href="#image-selctor" title="Link zu dieser Überschrift">¶</a></h2>
+<blockquote>
+<div><code class="docutils literal"><span class="pre">home/templates/home/image_selector.html</span></code></div></blockquote>
+<p>Wird ein Bild über eine Überschrift oder ein Thumbnail ausgewählt, so wird diese Anfrage mit dem Image_Selctor_Template gerendert. Neben dem Bild mit einer festgesetzten maximalen Höhe und breite, der Überschrift, dem Zeitstempel und dem Bildtext werden auch das Originalbild als auch der browseable Restendpoint verlinkt. Das entsprechende Modell:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">ImageSelector</span><span class="p">(</span><span class="n">Page</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Model of a specific page</span>
+<span class="sd">    In the ImageSelectorPage a resized image with all its information is displayed.</span>
+<span class="sd">    Has like the Homepage two modes: all and front</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">main_image</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span>
+        <span class="s1">&#39;home.CustomImage&#39;</span><span class="p">,</span>
+        <span class="n">null</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">blank</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">on_delete</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">SET_NULL</span><span class="p">,</span>
+        <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;+&#39;</span>
+    <span class="p">)</span>
+    <span class="n">front</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">BooleanField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">editable</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">date</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DateField</span><span class="p">(</span><span class="s2">&quot;Post date&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">date</span><span class="o">.</span><span class="n">today</span><span class="p">)</span>
+    <span class="n">intro</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">250</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">body</span> <span class="o">=</span> <span class="n">RichTextField</span><span class="p">(</span><span class="n">blank</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="n">search_fields</span> <span class="o">=</span> <span class="n">Page</span><span class="o">.</span><span class="n">search_fields</span> <span class="o">+</span> <span class="p">(</span>
+        <span class="n">index</span><span class="o">.</span><span class="n">SearchField</span><span class="p">(</span><span class="s1">&#39;intro&#39;</span><span class="p">),</span>
+        <span class="n">index</span><span class="o">.</span><span class="n">SearchField</span><span class="p">(</span><span class="s1">&#39;body&#39;</span><span class="p">),</span>
+    <span class="p">)</span>
+
+    <span class="c1">#content_panels for content creation in the CMS</span>
+    <span class="n">content_panels</span> <span class="o">=</span> <span class="n">Page</span><span class="o">.</span><span class="n">content_panels</span> <span class="o">+</span> <span class="p">[</span>
+        <span class="n">FieldPanel</span><span class="p">(</span><span class="s1">&#39;front&#39;</span><span class="p">,</span> <span class="n">widget</span><span class="o">=</span><span class="n">CheckboxInput</span><span class="p">),</span>
+        <span class="n">FieldPanel</span><span class="p">(</span><span class="s1">&#39;date&#39;</span><span class="p">),</span>
+        <span class="n">FieldPanel</span><span class="p">(</span><span class="s1">&#39;intro&#39;</span><span class="p">),</span>
+        <span class="n">ImageChooserPanel</span><span class="p">(</span><span class="s1">&#39;main_image&#39;</span><span class="p">),</span>
+        <span class="n">FieldPanel</span><span class="p">(</span><span class="s1">&#39;body&#39;</span><span class="p">,</span> <span class="n">classname</span><span class="o">=</span><span class="s2">&quot;full&quot;</span><span class="p">)]</span>
+
+    <span class="c1">#api_fields for the REST-interface</span>
+    <span class="n">api_fields</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;main_image&#39;</span><span class="p">,</span> <span class="s1">&#39;body&#39;</span><span class="p">,</span> <span class="s1">&#39;front&#39;</span><span class="p">,</span> <span class="s1">&#39;date&#39;</span><span class="p">,</span> <span class="s1">&#39;intro&#39;</span><span class="p">)</span>
+
+    <span class="c1">#methods to display and navigate to neighbourimages</span>
+    <span class="k">def</span> <span class="nf">get_prev_front_sibling</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;method for javascript navigation</span>
+<span class="sd">        :return previous ImageSelector with a front flag&quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">image_page</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_prev_siblings</span><span class="p">()</span><span class="o">.</span><span class="n">specific</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">image_page</span><span class="o">.</span><span class="n">front</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">image_page</span>
+        <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="nf">get_next_cutted_siblings</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;:return next 50 siblings to display thumbnails&quot;&quot;&quot;</span>
+        <span class="n">next_siblings</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_next_siblings</span><span class="p">()</span><span class="o">.</span><span class="n">specific</span><span class="p">()</span><span class="o">.</span><span class="n">reverse</span><span class="p">()</span>
+        <span class="n">len_next</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">next_siblings</span><span class="p">)</span>
+        <span class="n">start</span> <span class="o">=</span> <span class="n">len_next</span><span class="o">-</span><span class="mi">50</span> <span class="k">if</span> <span class="n">len_next</span><span class="o">-</span><span class="mi">50</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="mi">0</span>
+        <span class="k">return</span> <span class="n">next_siblings</span><span class="p">[</span><span class="n">start</span><span class="p">:</span><span class="n">len_next</span><span class="p">]</span>
+    <span class="o">...</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="show-tags-js">
+<h2>Show_tags.js<a class="headerlink" href="#show-tags-js" title="Link zu dieser Überschrift">¶</a></h2>
+<blockquote>
+<div><code class="docutils literal"><span class="pre">wagtailtagging/static/js/show_tags.js</span></code></div></blockquote>
+<p>Für eine dynamische Ansicht ist das Skript show_tags.js verantwortlich. Neben der Anzeige der selektierten Bereiche und ausgeschnittenen Objekte über die zusammengehörigen Tags, wird zudem eine einfache Navigation über die Pfeiltasten zur Verfügung gestellt. Dreh und Angelpunkt der Anzeige ist das nachfolgende JSON-Objekt:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">var</span> <span class="n">tags_to_selection</span> <span class="o">=</span> <span class="p">{};</span>
+</pre></div>
+</div>
+<p>Dies wird nachdem die Verhältnisgrößen kalkuliert worden mit den passenden Daten aus dem Serverobjekt &#8220;selections&#8221; befüllt.  Das vorladen von benachbarten Bilder wurde nicht ausimplementiert, es steht aber mit &#8216;json/method/object_id/&#8217; ein entsprechender Serverendpoint zur Verfügung. Die object_id entspricht der Bild-Id und method steht für eine der folgenden Funktionen:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="s1">&#39;get_prev_front_sibling&#39;</span><span class="p">,</span><span class="s1">&#39;get_next_front_sibling&#39;</span><span class="p">,</span>
+<span class="s1">&#39;get_next_cutted_siblings&#39;</span><span class="p">,</span><span class="s1">&#39;get_prev_cutted_siblings&#39;</span><span class="p">,</span>
+<span class="s1">&#39;get_next_cutted_front_siblings&#39;</span><span class="p">,</span><span class="s1">&#39;get_prev_cutted_front_siblings&#39;</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Inhalt</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Öffentliche Ansicht</a><ul>
+<li><a class="reference internal" href="#page-wrapper">Page-wrapper</a></li>
+<li><a class="reference internal" href="#homepage">Homepage</a></li>
+<li><a class="reference internal" href="#image-selctor">Image_Selctor</a></li>
+<li><a class="reference internal" href="#show-tags-js">Show_tags.js</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="nutzung.html" title="vorheriges Kapitel">Nutzungsanleitung</a></li>
+      <li>Next: <a href="erweiterungen.html" title="nächstes Kapitel">Erweiterungen</a></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>Diese Seite</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/oeffentlich.txt"
+            rel="nofollow">Quellcode anzeigen</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Schnellsuche</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Los" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2016, Kalle Hilsenbek.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.8</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.9</a>
+      
+      |
+      <a href="_sources/oeffentlich.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

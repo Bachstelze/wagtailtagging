@@ -1,0 +1,149 @@
+Ablauf
+======
+
+=====  =====  =======
+A      B      A and B
+=====  =====  =======
+False  False  False
+True   False  False
+False  True   False
+True   True   True
+=====  =====  ======
+
++------------------------+------------+----------+----------+
+| Header row, column 1   | Header 2   | Header 3 | Header 4 |
+| (header rows optional) |            |          |          |
++========================+============+==========+==========+
+| body row 1, column 1   | column 2   | column 3 | column 4 |
++------------------------+------------+----------+----------+
+| body row 2             | ...        | ...      |          |
++------------------------+------------+----------+----------+
+
+Tabellarischer Ablauf:
+
+=======  =======  ==========================================================================================================================
+"date"   "hours"  "text"
+=======  =======  ==========================================================================================================================
+"07-21"  "8.00"  "code aufgeräumt, dokumentiert und veröffentlicht"
+"07-20"  "8.00"  "Bug Fixing von falscher Maskengröße Praktikumsbesuch Beschnittenes Bild wird im Frontend angezeigt"
+=======  =======  ==========================================================================================================================
+"7999","2016-07-19","khilsenbek","1-8 (NMY Projekte): Bachelorprojekt | Kalle","8.00","Transparenz bei dem ausgeschnittenem Bild hinzugefügt
+generiertes Bild an das Model angebunden","Software Development"
+"8000","2016-07-18","khilsenbek","1-8 (NMY Projekte): Bachelorprojekt | Kalle","8.00","Bachelor Themenfindung
+save Funktion im Frontend angebunden","Software Development"
+"7946","2016-07-15","khilsenbek","1-8 (NMY Projekte): Bachelorprojekt | Kalle","7.00","Fertigstellung der Exposés
+weiteres Einlesen in mögliche Algos für einen Konturvergleich
+für die Suche in einer Rest-API informiert und angebunden","Software Development"
+"7945","2016-07-15","khilsenbek","1-4 (NMY Projekte): Erweiterung Backoffice | Reportings","1.00","weitere Einarbeitung in die backendstruktur","Software Development"
+"7884","2016-07-14","khilsenbek","1-8 (NMY Projekte): Bachelorprojekt | Kalle","8.00","Ausarbeitung Expose Scribble-Tool","Software Development"
+"7848","2016-07-13","khilsenbek","1-8 (NMY Projekte): Bachelorprojekt | Kalle","8.00","Ausarbeitung des Themas ""automatisierte Bildverarbeitung""","Software Development"
+"7792","2016-07-12","khilsenbek","1-8 (NMY Projekte): Bachelorprojekt | Kalle","8.00","anbindung von image clipping an das backend
+thesis themen ausgearbeitet","Software Development"
+"7770","2016-07-11","khilsenbek","1-8 (NMY Projekte): Bachelorprojekt | Kalle","8.00","anbindung von image clipping an das backend
+verbesserung der Konturberechnung
+Workflow diagramm Erstellung","Software Development"
+"7729","2016-07-08","khilsenbek","1-8 (NMY Projekte): Bachelorprojekt | Kalle","6.00","Erstellung einer einfachen Kontur
+Minimierung der Bildgröße während Analyse","Software Development"
+"7727","2016-07-08","khilsenbek","1-4 (NMY Projekte): Erweiterung Backoffice | Reportings","2.00","einpflegen der ersten Änderungen in den neuen Branch","Software Development"
+"7728","2016-07-07","khilsenbek","1-8 (NMY Projekte): Bachelorprojekt | Kalle","8.00","bug fixing im backend","Software Development"
+"7646","2016-07-06","khilsenbek","1-8 (NMY Projekte): Bachelorprojekt | Kalle","8.00","cropping backend weiterentwickelt, benutzung der bereits ausgeschnittenen bilder
+aufsetzung eines lokalen backoffice
+erste änderung im backoffice","Software Development"
+"7626","2016-07-05","khilsenbek","1-8 (NMY Projekte): Bachelorprojekt | Kalle","8.00","einarbeitung in den django admin
+drop down als auswahl für die bereits gemachten selections implementiert","Software Development"
+"7606","2016-07-04","khilsenbek","1-8 (NMY Projekte): Bachelorprojekt | Kalle","8.00","view für cliping geschrieben und im admin angebunden","Software Development"
+"7554","2016-07-01","khilsenbek","1-8 (NMY Projekte): Bachelorprojekt | Kalle","8.00","Funktionalität des Browserinterfaces verbessert","Software Development"
+"7553","2016-06-30","khilsenbek","1-8 (NMY Projekte): Bachelorprojekt | Kalle","8.00","server anbindung für grabCut verbessert","Software Development"
+"7552","2016-06-29","khilsenbek","1-8 (NMY Projekte): Bachelorprojekt | Kalle","8.00","Fehlersuche im browserinterface für grabCut","Software Development"
+"7457","2016-06-28","khilsenbek","1-8 (NMY Projekte): Bachelorprojekt | Kalle","8.00","interfaceerstellung für grabCut
+analyse der ki anwendungsgebiete für VR","Software Development"
+"7421","2016-06-27","khilsenbek","1-8 (NMY Projekte): Bachelorprojekt | Kalle","8.00","erste einbindung von konvas js
+lektüre über fouriertransformation für Bilder
+","Software Development"
+"7389","2016-06-24","khilsenbek","1-8 (NMY Projekte): Bachelorprojekt | Kalle","8.00","analyse und suche von javscript frameworks für das Interface des halbautomischen grabCut-Algorithmus","Software Development"
+"7362","2016-06-23","khilsenbek","1-8 (NMY Projekte): Bachelorprojekt | Kalle","8.00","einbindung von opencv in das wagtail projekt","Software Development"
+"7320","2016-06-22","khilsenbek","1-8 (NMY Projekte): Bachelorprojekt | Kalle","8.00","einarbeitung und installation von opencv
+django channels
+test von grabCut","Software Development"
+"7299","2016-06-21","khilsenbek","1-8 (NMY Projekte): Bachelorprojekt | Kalle","8.00","livewire test
+weitere suche nach image segmentation algos-> opencv grabcut
+test von ReportLab","Software Development"
+"7262","2016-06-20","khilsenbek","1-8 (NMY Projekte): Bachelorprojekt | Kalle","8.25","Suche nach freistellwerkzeugen","Software Development"
+"7215","2016-06-17","khilsenbek","1-8 (NMY Projekte): Bachelorprojekt | Kalle","8.00","weiter unit tests für Rest API geschrieben
+schnittstelle für javascript frontend für wagtail geschrieben
+message für phantom stick geschrieben","Software Development"
+"7170","2016-06-16","khilsenbek","1-8 (NMY Projekte): Bachelorprojekt | Kalle","8.00","unit tests geschrieben
+pyNN eingearbeitet","Software Development"
+"7134","2016-06-15","khilsenbek","1-8 (NMY Projekte): Bachelorprojekt | Kalle","8.00","erste funktionierende Tests geschrieben","Software Development"
+"7079","2016-06-14","khilsenbek","1-8 (NMY Projekte): Bachelorprojekt | Kalle","8.50","Analyse der Anwendungsgebiete von Neuronalen Netzen
+Anmeldung und Test auf www.wordseye.com","Software Development"
+"7058","2016-06-13","khilsenbek","1-8 (NMY Projekte): Bachelorprojekt | Kalle","8.75","anmeldung auf amazon ws
+anmeldung nvidia developers
+Einarbeitung Theano
+weitere Bilder auf wagtailtagging eingepflegt
+Analyse von NN-Anwendungsgebieten","Software Development"
+"7039","2016-06-10","khilsenbek","1-8 (NMY Projekte): Bachelorprojekt | Kalle","7.50","Ausarbeitung des Vortrags
+Vorbereitung von wagtailtagging für den Vortrag
+Vortrag gehalten
+einarbeitung in neural doodle","Software Development"
+"7025","2016-06-09","khilsenbek","1-8 (NMY Projekte): Bachelorprojekt | Kalle","8.00","bug fix thumbnail, static files laden
+how to fürs tagging geschrieben
+einarbeitung vortrag","Software Development"
+"6971","2016-06-08","khilsenbek","1-8 (NMY Projekte): Bachelorprojekt | Kalle","8.00","ausarbeitung vortrag
+anpassung des user interfaces
+einarbeitung tests","Software Development"
+"6958","2016-06-07","khilsenbek","1-8 (NMY Projekte): Bachelorprojekt | Kalle","8.25","update to wagtail
+fixxing update comlications
+brainstorming sound 3d visualization","Software Development"
+"6930","2016-06-06","khilsenbek","1-8 (NMY Projekte): Bachelorprojekt | Kalle","8.00","fix deployment
+abhängikeiten von lib lösen","Software Development"
+"6844","2016-06-03","khilsenbek","1-8 (NMY Projekte): Bachelorprojekt | Kalle","6.75","deployement","Software Development"
+"6786","2016-06-02","khilsenbek","1-8 (NMY Projekte): Bachelorprojekt | Kalle","8.00","front bug-fixing
+einlesen von Spracherkennung","Software Development"
+"6760","2016-06-01","khilsenbek","1-8 (NMY Projekte): Bachelorprojekt | Kalle","8.00","Bug fixing
+Filtermöglichkeit in ""new"" und ""front"" geschrieben","Software Development"
+"6747","2016-05-31","khilsenbek","1-8 (NMY Projekte): Bachelorprojekt | Kalle","8.00","Einfügen der Präsentationsbilder
+bug-fixing in javascript","Software Development"
+"6727","2016-05-30","khilsenbek","1-8 (NMY Projekte): Bachelorprojekt | Kalle","8.00","Ausarbeitung des Vortrages","Software Development"
+"6665","2016-05-27","khilsenbek","1-8 (NMY Projekte): Bachelorprojekt | Kalle","8.00","versucht Bilder über tags suchbar zumachen -> gängiger Bug
+Suche nach Artikeln zu neuronalen Netzen","Software Development"
+"6612","2016-05-23","khilsenbek","1-8 (NMY Projekte): Bachelorprojekt | Kalle","8.00","Frontend weiter gemacht
+Coperate Design umgesetzt
+Umlaute nun im dateinamen möglich
+Anzeige von zentrietren Bildern mit Überschrift und Bildbeschreibung
+Links zu dem Originalbild und Restschnittstelle","Software Development"
+"6592","2016-05-20","khilsenbek","1-8 (NMY Projekte): Bachelorprojekt | Kalle","8.00","Automasiertes erzeugen von Pages beim Einstellen von Bildern
+Anzeige der Auswahlbereiche im Template","Software Development"
+"6569","2016-05-19","khilsenbek","1-8 (NMY Projekte): Bachelorprojekt | Kalle","8.00","Verbesserung der Auswahlbedienung
+Erstellung des Pagemodells für die Bilder","Software Development"
+"6568","2016-05-18","khilsenbek","1-8 (NMY Projekte): Bachelorprojekt | Kalle","8.00","Anbindung der RestApi
+Verbesserung der Auswahlbedienung
+","Software Development"
+"6479","2016-05-17","khilsenbek","1-8 (NMY Projekte): Bachelorprojekt | Kalle","8.00","Strukturänderung der json_message
+Änderung von Selektionen im Backend möglich","Software Development"
+"6429","2016-05-13","khilsenbek","1-8 (NMY Projekte): Bachelorprojekt | Kalle","8.00","Anzeigen von alten Auswahlbereichen
+löschen von auswahlbereichen","Software Development"
+"6403","2016-05-12","khilsenbek","1-8 (NMY Projekte): Bachelorprojekt | Kalle","8.00","reading jcrop docs
+writing frontend javascript
+added fields to croppedImage modell","Software Development"
+"6377","2016-05-11","khilsenbek","1-8 (NMY Projekte): Bachelorprojekt | Kalle","8.00","bug fixing
+reset of database
+added json field to model
+first jquery script","Software Development"
+"6349","2016-05-10","khilsenbek","1-8 (NMY Projekte): Bachelorprojekt | Kalle","8.00","Definition des Modells
+einpfelgen einer eigenen Imageklasse
+aufsetzen von python environments
+aufsetzen von postgres
+erste Tests für das Modell durchgeführt","Software Development"
+"6334","2016-05-09","khilsenbek","1-8 (NMY Projekte): Bachelorprojekt | Kalle","8.00","Projektvorstellung
+Aufsetzung des Projektes in GIT
+erste Überlegungen zum Modell","Software Development"
+"6279","2016-05-06","khilsenbek","1-8 (NMY Projekte): Bachelorprojekt | Kalle","8.00","Installation von Unity 3d
+eingelesen in die Erstellung von Adminpages
+grafische Ausarbeitung der Testidee","Software Development"
+"6264","2016-05-04","khilsenbek","1-8 (NMY Projekte): Bachelorprojekt | Kalle","8.00","Erstellung von Wagtail-admin-Kommandos
+weiteres einlesen in wagtail","Software Development"
+"6195","2016-05-03","khilsenbek","1-8 (NMY Projekte): Bachelorprojekt | Kalle","8.00","Einarbeitung in wagtail, speziell Menüs
+ideele Ausarbeitung eines ersten Testprojektes, Tagging-System über Rest-api für neuronale Netze zur Verfügung stellen","Software Development"
+"6169","2016-05-02","khilsenbek","1-8 (NMY Projekte): Bachelorprojekt | Kalle","8.00","Installation Arbeitsplatz
+einlesen in wagtail","Software Development"

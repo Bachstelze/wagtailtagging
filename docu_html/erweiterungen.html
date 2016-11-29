@@ -1,0 +1,285 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="de">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Erweiterungen &#8212; wagtailtagging 1.0 Dokumentation</title>
+    
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/translations.js"></script>
+    <link rel="index" title="Stichwortverzeichnis" href="genindex.html" />
+    <link rel="search" title="Suche" href="search.html" />
+    <link rel="top" title="wagtailtagging 1.0 Dokumentation" href="index.html" />
+    <link rel="next" title="Ablauf" href="tabelle.html" />
+    <link rel="prev" title="Öffentliche Ansicht" href="oeffentlich.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="id1">
+<h1>Erweiterungen<a class="headerlink" href="#id1" title="Link zu dieser Überschrift">¶</a></h1>
+<p>Die zwei neuen Hauptfeatures - die multiple Objektauswahl und die Bildsegmentierung - wurden in die herkömmliche Wagtailoberfläche eingepflegt. Entweder wurden Benutzerinterfaces der herkömlichen <a class="reference external" href="https://wagtail.io/features/image-cropping/">cropping Funktion</a> übernommen oder eigene hinzugefügt. Dabei wurden die Javascriptbibliotheken <a class="reference external" href="http://deepliquid.com/content/Jcrop.html">Jcrop</a> für die Objektauswahl und <a class="reference external" href="https://konvajs.github.io/">Konva</a> zur Flächenmarkierung in der Bildsegmentierung genutzt.</p>
+<p>Für die Mehrfachauswahl von Objekten und der Zuweisung zu multiplen Tags wurde das edit.html Template überschrieben. Dies beinhaltet das Laden von externen Javascript und CSS Dateien wie wagtailtagging.css und wagtailtagging.js sowie eine erweiterte Speicherform und das Laden der alten Objekt-Tag-Zuweisungen mit zugehörigen Metadaten</p>
+<div class="section" id="wagtailtagging-js">
+<h2>wagtailtagging.js<a class="headerlink" href="#wagtailtagging-js" title="Link zu dieser Überschrift">¶</a></h2>
+<blockquote>
+<div><code class="docutils literal"><span class="pre">wagtailtagging/static/js/wagtailtagging.js</span></code></div></blockquote>
+<p>In wagtailtagging.js wurden Funktionen und Hilfsfunktionen gebündelt, die die Steuerung als auch die korrekte Umrechnung der Bildpunkte ermöglicht. Das Hauptdatenobjekt in der Speicherung und der Kommunikation mit dem Server stellt die json_message dar:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">var</span> <span class="n">json_message</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;create&quot;</span><span class="p">:{},</span> <span class="s2">&quot;delete&quot;</span><span class="p">:[],</span> <span class="s2">&quot;alter&quot;</span><span class="p">:[]};</span>
+</pre></div>
+</div>
+<p>Dieses JSON-Objekt wird beim Laden der Seite initiert und bei der Ausführung der Buttons &#8220;Save Conntections&#8221; und &#8220;Delete Scope&#8221; bearbeitet:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>function save_connections() {
+    //saves the hightlighted tags and selections
+    //as one connection to the json message
+    updateJSON();
+    release_section();
+    current_tags = [];
+    current_selections = {};
+    $(&quot;.tag&quot;).css(&quot;background-color&quot;,&quot;#43b1b0&quot;);
+    $(&quot;.selected&quot;).removeClass(&quot;selected&quot;);
+    updateButtons();
+}
+</pre></div>
+</div>
+<p>Bei save_connections erfolgt die Erneuerung von json_message in updateJSON, anschließend werden die Zwischenspeicher zurückgesetzt und die Styles und Buttons dem neuen Status angepasst. Dieselbe Funktion - nur ohne das Speichern - wird auch bei dem &#8216;Cancel&#8217;-Button aufgerufen. Demgegenüber werden bei delete_scope nur die ausgewählte Selektion aus der json_message und dem Dombaum gelöscht.</p>
+</div>
+<div class="section" id="models-py">
+<h2>models.py<a class="headerlink" href="#models-py" title="Link zu dieser Überschrift">¶</a></h2>
+<blockquote>
+<div><code class="docutils literal"><span class="pre">home/models.py</span></code></div></blockquote>
+<p>Die Datei models.py definiert neben den Modells für die Seiten (HomePage und ImageSelector) die abgeleiteten Modells für die Bilder und Bildausschnitte wie auch Funtionen zur Persistenz neuer Bilder und Ausschnitte. Zur Haltung eigener Bilder ist die Klasse CustomImage zuständig, die von dem abstrakten Modell AbstractImage abgeleitet wird:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">CustomImage</span><span class="p">(</span><span class="n">AbstractImage</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Own imageclass</span>
+<span class="sd">    Attributes:</span>
+<span class="sd">        json        JSONField to get the informations from edit.html</span>
+<span class="sd">        selections  JSONField to display the selections made in edit.html in the Rest-API</span>
+<span class="sd">        has_page    BooleanField is False for new Images</span>
+<span class="sd">        thumb_url   CharField could be used for javscript loading of an ImageSelectorPage</span>
+<span class="sd">        resize_url   CharField could be used for javscript loading of an ImageSelectorPage</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">blanked_image</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">BlankedImage</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">json</span> <span class="o">=</span> <span class="n">JSONField</span><span class="p">(</span><span class="n">blank</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="p">{})</span>
+    <span class="n">selections</span> <span class="o">=</span> <span class="n">JSONField</span><span class="p">(</span><span class="n">blank</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="p">{})</span>
+    <span class="n">has_page</span> <span class="o">=</span> <span class="n">BooleanField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">thumb_url</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">250</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">resize_url</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">250</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">blanked_url</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">250</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">admin_form_fields</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">admin_form_fields</span> <span class="o">+</span> <span class="p">(</span>
+        <span class="s1">&#39;json&#39;</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">api_fields</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;selections&#39;</span><span class="p">,</span> <span class="s1">&#39;filename&#39;</span><span class="p">,</span> <span class="s1">&#39;thumb_url&#39;</span><span class="p">,</span> <span class="s1">&#39;resize_url&#39;</span><span class="p">,</span> <span class="s1">&#39;blanked_url&#39;</span><span class="p">,</span> <span class="s1">&#39;tags&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">get_selections</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">selections</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Für jedes hochgeladene Bild wird in create_page(sender, instance) eine ImageSelector(Page) erstellt und anschließend die has_page-Flag auf Wahr gesetzt. Das has_page-Attribut ist nötig um in dem Speicherhook die verschieden Modis unterscheiden zu könne:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="nd">@receiver</span><span class="p">(</span><span class="n">post_save</span><span class="p">,</span> <span class="n">sender</span><span class="o">=</span><span class="n">CustomImage</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">post_save_image</span><span class="p">(</span><span class="n">sender</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;own hook, is called after an image is saved</span>
+<span class="sd">    if the save call comes from edit.html create_cropped_image() is called.</span>
+<span class="sd">    Else the call comes from the image uploader, so a new ImageSelectorPage is created.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">instance</span><span class="o">.</span><span class="n">json</span> <span class="ow">and</span> <span class="s1">&#39;endrecursion&#39;</span> <span class="ow">in</span> <span class="n">instance</span><span class="o">.</span><span class="n">json</span><span class="p">:</span>
+        <span class="c1"># every create_cropped_image() call saves the image once again</span>
+        <span class="nb">print</span> <span class="s1">&#39;end recursion&#39;</span>
+    <span class="k">elif</span> <span class="n">instance</span><span class="o">.</span><span class="n">json</span> <span class="ow">and</span> <span class="ow">not</span> <span class="p">(</span><span class="s1">&#39;endrecursion&#39;</span> <span class="ow">in</span> <span class="n">instance</span><span class="o">.</span><span class="n">json</span><span class="p">):</span>
+        <span class="c1">#create a new cropped image</span>
+        <span class="n">create_cropped_image</span><span class="p">(</span><span class="n">sender</span><span class="p">,</span> <span class="n">instance</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="ow">not</span> <span class="n">instance</span><span class="o">.</span><span class="n">has_page</span><span class="p">:</span>
+        <span class="c1">#a new ImageSelectorPage is created and saved</span>
+        <span class="n">create_page</span><span class="p">(</span><span class="n">sender</span><span class="p">,</span> <span class="n">instance</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>In wagtailtagging/templates/drawing.html werden die Benutzereingaben zur Bildsegmentierung entgegengenommen, die auf dem Server mittels dem halbautomatischen OpenCV-Algorithmus <a class="reference external" href="http://docs.opencv.org/3.1.0/d8/d83/tutorial_py_grabcut.html">grabCut</a> segmentiert und in den Models gespeichert werden.</p>
+</div>
+<div class="section" id="foreground-cropping-js">
+<h2>foreground_cropping.js<a class="headerlink" href="#foreground-cropping-js" title="Link zu dieser Überschrift">¶</a></h2>
+<blockquote>
+<div><code class="docutils literal"><span class="pre">wagtailtagging/static/js/foreground_cropping.js</span></code></div></blockquote>
+<p>Neben den Interaktionsfunktionalitäten läuft die Kommunikation und die Darstellung der Ergebnisse über diese JQuery-Datei. Zu den Interaktionen zählen:</p>
+<ol class="arabic">
+<li><p class="first">Auswahl des Ausschnittes:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>$(&#39;#drop_down&#39;).on(&#39;change&#39;, function() {
+  //get the (cropped) image id
+  var id = $(&quot;option:selected&quot;, this)[0].id
+  var new_selection = get_selection(id);
+  //reset the canvas and init it with the new image id
+  clear_canvas(new_selection);
+});
+</pre></div>
+</div>
+</li>
+<li><p class="first">Auswahl und Benutzung des Vordergrundpinsels:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>$(document).on(&#39;click&#39;, &#39;#foreground_button&#39;, function(){
+ mode = &#39;brush&#39;;
+ context.strokeStyle = &quot;rgb(48,48,48)&quot;;
+ });
+</pre></div>
+</div>
+<p>Das Zeichnen erfolgt bei dem Event:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">stage</span><span class="o">.</span><span class="n">on</span><span class="p">(</span><span class="s1">&#39;contentMousemove.proto&#39;</span><span class="p">,</span> <span class="n">function</span><span class="p">()</span> <span class="p">{</span><span class="o">...</span><span class="p">});</span>
+</pre></div>
+</div>
+<p>Hierbei werden die verschieden Zeichen Modis abgefragt und zwischen der gespeicherten und der kalkulierten Mausposition eine Linie gezeichnet.</p>
+</li>
+<li><p class="first">Auswahl und Benutzung des Hintergrundpinsels:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>$(document).on(&#39;click&#39;, &#39;#background_button&#39;, function(){
+    mode = &#39;brush&#39;;
+    context.strokeStyle = &quot;rgb(100,200,215)&quot;;
+});
+</pre></div>
+</div>
+</li>
+<li><p class="first">Auswahl und Benutzung des Radiergummis:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>$(document).on(&#39;click&#39;, &#39;#eraser_button&#39;, function(){
+    mode = &#39;eraser&#39;;
+});
+</pre></div>
+</div>
+</li>
+<li><p class="first">Ein Bild-zoom über die rechte Maustaste, hierfür sind die Variablen stage.x, stage.y und stage.scale zuständig. Weitere Umgebungsvariablen werden beim Aufruf der Funktion zoom(stage, level) geändert.</p>
+</li>
+<li><p class="first">Auswahl der Pinseldicke:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>$(&quot;#brush_size&quot;).change(function() {
+    context.lineWidth = $( this ).val();
+});
+</pre></div>
+</div>
+</li>
+<li><p class="first">Anstoßen der Kalkulation:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>$(&#39;#calculate_button&#39;).bind(&#39;click&#39;, data_object, calculate);
+</pre></div>
+</div>
+<p>Dabei wird das Canvas-Objekt in eine DataUrl umgewandelt und mit den nötigen Metadaten über create_post(message) an den Server geschickt. Bei einem erfolgreichen Datenaustausch wird das Ergebnis mittels drawImage(img) dargestellt.</p>
+</li>
+<li><p class="first">Anstoßen des Speichervorgangs:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>$(&#39;#save_button&#39;).bind(&#39;click&#39;, data_object, save);
+</pre></div>
+</div>
+<p>Derselbe Vorgang wie bei der Kalkulation, nur die Speicherflag wird auf True gesetzt <code class="docutils literal"><span class="pre">&quot;save_clipping&quot;</span> <span class="pre">:</span> <span class="pre">True</span></code>.</p>
+</li>
+</ol>
+</div>
+<div class="section" id="grabbing-py">
+<h2>grabbing.py<a class="headerlink" href="#grabbing-py" title="Link zu dieser Überschrift">¶</a></h2>
+<blockquote>
+<div><code class="docutils literal"><span class="pre">wagtailtagging/grabbing.py</span></code></div></blockquote>
+<p>Hier werden die nötigen Umwandlungen und Berechnungen für die Objektsegmentierung vorgenommen und letztendlich als Bilder und Masken abgespeichert. Über die Funktion <code class="docutils literal"><span class="pre">create_clipping(request)</span></code> die an die Url get_foreground angebunden ist, wird die Hauptfunktion:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_mask_from_image</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">selection</span><span class="p">,</span> <span class="n">cropped_image_link</span><span class="p">,</span> <span class="n">save_result</span><span class="p">,</span> <span class="n">image_object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; generates the mask and blankes the image from the users input</span>
+<span class="sd">    :param image: the mask from the clipping interface in wagtail as a png image</span>
+<span class="sd">    :param selection: a dic with all selection parameters</span>
+<span class="sd">    :param cropped_image_link: link to the already cropped image in the backend</span>
+<span class="sd">    :param save_result: boolean value if True grabCut runs with a higher resolution</span>
+<span class="sd">                        and the result is stored in the backend</span>
+<span class="sd">    :param image_object: the image object from the model is either a CustomImage or a CroppedImage</span>
+<span class="sd">    :return the generated mask from the grabCut-Algo</span>
+<span class="sd">    ...</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+</pre></div>
+</div>
+<p>aufgerufen und die Maske als Stream wieder zum Client geschickt. Innerhalb der Funktion werden die empfangenen base64 Daten dekodiert, das Bild für eine geringe Auflösung und somit kleineren Rechenaufwand herunterskaliert. Im Anschluss berechnet der grabCut-Algorithmus von OpenCV die Maske und speichert das Ergebnis bei gesetzter save_result Variable über <code class="docutils literal"><span class="pre">update_blanked_image(file_path,</span> <span class="pre">image_object,</span> <span class="pre">object_id)</span></code> in das Modell. Wem diese performancekritische Berechnung in OpenCV zu langsam ist, kann man bei entsprechender Hardware auf <a class="reference external" href="https://developer.nvidia.com/npp">NVIDIA Performance graphcut primitive</a> zurückgreifen.</p>
+</div>
+<div class="section" id="contour-py">
+<h2>contour.py<a class="headerlink" href="#contour-py" title="Link zu dieser Überschrift">¶</a></h2>
+<blockquote>
+<div><code class="docutils literal"><span class="pre">wagtailtagging/contour.py</span></code></div></blockquote>
+<p>Die Datei stellt eine Funktion zur Berechnungen einer Objektkontour bereit, die aber noch nicht im Frontend angezeigt wird und nicht im Backend persistiert wird. Diese und weitere Funktionen waren angedacht um Merkmale für Ähnlichkeitssuchen bereitstellen zu können.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Inhalt</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Erweiterungen</a><ul>
+<li><a class="reference internal" href="#wagtailtagging-js">wagtailtagging.js</a></li>
+<li><a class="reference internal" href="#models-py">models.py</a></li>
+<li><a class="reference internal" href="#foreground-cropping-js">foreground_cropping.js</a></li>
+<li><a class="reference internal" href="#grabbing-py">grabbing.py</a></li>
+<li><a class="reference internal" href="#contour-py">contour.py</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="oeffentlich.html" title="vorheriges Kapitel">Öffentliche Ansicht</a></li>
+      <li>Next: <a href="tabelle.html" title="nächstes Kapitel">Ablauf</a></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>Diese Seite</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/erweiterungen.txt"
+            rel="nofollow">Quellcode anzeigen</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Schnellsuche</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Los" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2016, Kalle Hilsenbek.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.8</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.9</a>
+      
+      |
+      <a href="_sources/erweiterungen.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

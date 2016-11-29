@@ -1,0 +1,17 @@
+﻿.. _backend:
+
+Backend
+======
+
+Die zwei neuen Hauptfeatures - die multiple Objektauswahl und die Bildsegmentierung - wurden in die herkömmliche Wagtailoberfläche eingepflegt.
+
+Multiple Objektauswahl
+======================
+
+.. image:: objektauswahl.png
+
+Objektsegmentierung
+===================
+halbautomatische Bildsegmentierung mittels OpenCV
+
+.. image:: objektzuschnitt.png
