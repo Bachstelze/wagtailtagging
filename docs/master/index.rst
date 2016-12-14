@@ -12,7 +12,7 @@ Herzlich Willkommen zu wagtailtagging's Doku!
    Einfuehrung.rst
    wagtail.rst
    nutzung.rst
+   architektur.rst
    oeffentlich.rst
    erweiterungen.rst
    fazit.rst
-

@@ -14,4 +14,4 @@ Betrieb
 Arbeitsumfeld
 =============
 
-Mein Arbeitsumfeld lag in der Entwicklungsabteilung, die im Gegensatz zu den Designern hauptsächlich die Programmieraufgaben übernehmen. Innerhalb der Entwickler war ich zusammen mit `Dirk Eschler <https://github.com/deschler>`_ am Backend tätig. Die Hauptaufgabe während meinem 3-monatigem Praktikums bestand in der Austestung neuer Software und deren mögliche Anbindung in kommende Projekte.
+Mein Arbeitsumfeld lag in der Entwicklungsabteilung, die im Gegensatz zu den Designern hauptsächlich die Programmieraufgaben übernehmen. Innerhalb der Entwickler war ich zusammen mit `Dirk Eschler <https://github.com/deschler>`_ am Backend tätig. Die Hauptaufgabe während meinem 3-monatigem Praktikums bestand in der Austestung neuer Software und deren mögliche Anbindung in kommende Projekte. Bei technischen Fragen zur Entwicklungsumgebung, Projektdeployement und Rechnerzusammenbau wurde ich tatkräftig von D. Eschler unterstützt. In spontaner Rücksprache, Meetings mit dem Management oder in dem wöchentlich Entwicklertreffen wurden die individuellen Ziele festgelegt.

@@ -4,7 +4,7 @@
 Wagtail
 =======
 
-`Wagtail <https://wagtail.io/>`_ ist ein Opensource CMS für `Django <https://www.djangoproject.com/>`_ von Torchbox. Es bietet eine übersichtliche Multidevice-Oberfläche um Inhalte in die eigenen Wagtailfelder wie das Streamfield einzupflegen, als auch eine intuitive Bilderveraltung mit einer automatischen Fokuserkennung und Zentrierung. Die Bildverwaltung ist der Ausgangspunkt für eigene Erweiterungen.
+`Wagtail <https://wagtail.io/>`_ ist ein Opensource CMS für `Django <https://www.djangoproject.com/>`_ von Torchbox. Es bietet eine übersichtliche Multidevice-Oberfläche um Inhalte in die eigenen Wagtailfelder wie das Streamfield einzupflegen, als auch eine intuitive Bilderveraltung mit einer automatischen Fokuserkennung und Zentrierung. Das Streamfield ermöglicht das Einpflegen von verschiedenen Websiteobjekten wie Videos, Paragraphen oder Dokumenten. Die Erklärungen zu aktuellen Features sind auf der `Wagtailseite <https://wagtail.io/features/>`_ zufinden Die Bildverwaltung von Wagtail ist der Ausgangspunkt für eigene Erweiterungen.
 
 .. image:: wagtail_images.png
 
