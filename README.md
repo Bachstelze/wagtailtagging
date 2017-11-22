@@ -1,6 +1,5 @@
 # wagtailtagging
-extension for wagtail to offer basic image operation like selection tagging and segmentation.
-An older version is online viewable: http://wagtailtagging.nmy.de/nmy-neuro-archive/#NMY_Neuro_Archive
+extension for [wagtail](https://wagtail.io/) to offer basic image operation like selection tagging and segmentation.
 
 A german documentation: http://wagtailtagging.readthedocs.io/en/latest/
 
