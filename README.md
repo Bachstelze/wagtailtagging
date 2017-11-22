@@ -8,3 +8,6 @@ Viewport of the Frontend for the [grabCut Algo](http://docs.opencv.org/3.1.0/d8/
 
 Example Viewport of the spcifific object tagging:
 ![alt tag](https://raw.githubusercontent.com/Bachstelze/wagtailtagging/master/objektauswahl2.png)
+
+# TODO
+change the semi-automated grabCut algo to a supervised method like https://github.com/CharlesShang/FastMaskRCNN
